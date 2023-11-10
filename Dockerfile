@@ -6,3 +6,4 @@ RUN unzip awscliv2.zip
 RUN ./aws/install
 COPY . .
 RUN chmod +x get-http-5xx.sh
+CMD ["bash", "-c", "get-http-5xx.sh"]
