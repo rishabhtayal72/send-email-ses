@@ -1,6 +1,9 @@
-FROM ubuntu:22.04
+FROM tayal13/python-boto3:v1
 RUN apt update -y
-RUN apt install unzip curl -y
+# RUN apt install python3 -y
+# RUN apt install python3-pip -y
+# RUN pip3 install boto3
+# RUN apt install unzip curl jq -y
 RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
 RUN unzip awscliv2.zip
 RUN ./aws/install
