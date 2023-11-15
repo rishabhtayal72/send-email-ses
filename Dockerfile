@@ -1,5 +1,5 @@
-FROM tayal13/python-boto3:v1
-RUN apt update -y
+FROM tayal13/python-boto3:v2
+# RUN apt update -y
 # RUN apt install python3 -y
 # RUN apt install python3-pip -y
 # RUN pip3 install boto3
