@@ -22,21 +22,21 @@ RECIPIENT = "rishabh@devtron.ai"
 AWS_REGION = "ap-south-1"
 
 # The subject line for the email.
-SUBJECT = "Customer service contact info"
+SUBJECT = "HTTP 5xx"
 
 # The full path to the file that will be attached to the email.
-ATTACHMENT = "path/to/customers-to-contact.xlsx"
+ATTACHMENT = "http-5xx.csv"
 
 # The email body for recipients with non-HTML email clients.
-BODY_TEXT = "Hello,\r\nPlease see the attached file for a list of customers to contact."
+BODY_TEXT = "Hi,\r\nPFA : CSV of all the 5xx occured in last week along with API Path"
 
 # The HTML body of the email.
 BODY_HTML = """\
 <html>
 <head></head>
 <body>
-<h1>Hello!</h1>
-<p>Please see the attached file for a list of customers to contact.</p>
+<h3>Hello!</h3>
+<p>PFA : CSV of all the 5xx occured in last week along with API Path</p>
 </body>
 </html>
 """
