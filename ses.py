@@ -11,7 +11,7 @@ SENDER = "rishabh@devtron.ai"
 
 # Replace recipient@example.com with a "To" address. If your account 
 # is still in the sandbox, this address must be verified.
-RECIPIENT = "rishabh@devtron.ai"
+RECIPIENT = ["rishabh@devtron.ai", "pawan@devtron.ai"]
 
 # Specify a configuration set. If you do not want to use a configuration
 # set, comment the following variable, and the 
@@ -22,7 +22,7 @@ RECIPIENT = "rishabh@devtron.ai"
 AWS_REGION = "ap-south-1"
 
 # The subject line for the email.
-SUBJECT = "HTTP 5xx"
+SUBJECT = "HTTP 5xx at Del-Platform for last week"
 
 # The full path to the file that will be attached to the email.
 ATTACHMENT = "http-5xx.csv"
