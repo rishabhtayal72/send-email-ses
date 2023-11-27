@@ -11,7 +11,8 @@ SENDER = "rishabh@devtron.ai"
 
 # Replace recipient@example.com with a "To" address. If your account 
 # is still in the sandbox, this address must be verified.
-RECIPIENT = ["rishabh@devtron.ai", "pawan@devtron.ai"]
+RECIPIENT = ["rishabh@devtron.ai", "nishant@devtron.ai", "kripansh@devtron.ai", "vikram@devtron.ai"]
+# RECIPIENT = "rishabh@devtron.ai"
 
 # Specify a configuration set. If you do not want to use a configuration
 # set, comment the following variable, and the 
@@ -22,7 +23,8 @@ RECIPIENT = ["rishabh@devtron.ai", "pawan@devtron.ai"]
 AWS_REGION = "ap-south-1"
 
 # The subject line for the email.
-SUBJECT = "HTTP 5xx at Del-Platform for last week"
+enterprise = os.environ.get('enterprise', 'your_enterprise')
+SUBJECT = "HTTP 5xx at "+enterprise+" for last week"
 
 # The full path to the file that will be attached to the email.
 ATTACHMENT = "http-5xx.csv"
@@ -48,53 +50,58 @@ CHARSET = "utf-8"
 client = boto3.client('ses',region_name=AWS_REGION)
 
 # Create a multipart/mixed parent container.
-msg = MIMEMultipart('mixed')
+for i in RECIPIENT:
+    msg = MIMEMultipart('mixed')
 # Add subject, from and to lines.
-msg['Subject'] = SUBJECT 
-msg['From'] = SENDER 
-msg['To'] = RECIPIENT
 
-# Create a multipart/alternative child container.
-msg_body = MIMEMultipart('alternative')
+    print(i)
+    print(type(i))
 
-# Encode the text and HTML content and set the character encoding. This step is
-# necessary if you're sending a message with characters outside the ASCII range.
-textpart = MIMEText(BODY_TEXT.encode(CHARSET), 'plain', CHARSET)
-htmlpart = MIMEText(BODY_HTML.encode(CHARSET), 'html', CHARSET)
+    msg['Subject'] = SUBJECT 
+    msg['From'] = SENDER 
+    msg['To'] = i
 
-# Add the text and HTML parts to the child container.
-msg_body.attach(textpart)
-msg_body.attach(htmlpart)
+    # Create a multipart/alternative child container.
+    msg_body = MIMEMultipart('alternative')
 
-# Define the attachment part and encode it using MIMEApplication.
-att = MIMEApplication(open("http-5xx.csv", 'rb').read())
+    # Encode the text and HTML content and set the character encoding. This step is
+    # necessary if you're sending a message with characters outside the ASCII range.
+    textpart = MIMEText(BODY_TEXT.encode(CHARSET), 'plain', CHARSET)
+    htmlpart = MIMEText(BODY_HTML.encode(CHARSET), 'html', CHARSET)
 
-# Add a header to tell the email client to treat this part as an attachment,
-# and to give the attachment a name.
-att.add_header('Content-Disposition','attachment',filename=os.path.basename(ATTACHMENT))
+    # Add the text and HTML parts to the child container.
+    msg_body.attach(textpart)
+    msg_body.attach(htmlpart)
 
-# Attach the multipart/alternative child container to the multipart/mixed
-# parent container.
-msg.attach(msg_body)
+    # Define the attachment part and encode it using MIMEApplication.
+    att = MIMEApplication(open("http-5xx.csv", 'rb').read())
 
-# Add the attachment to the parent container.
-msg.attach(att)
-#print(msg)
-try:
-    #Provide the contents of the email.
-    response = client.send_raw_email(
-        Source=SENDER,
-        Destinations=[
-            RECIPIENT
-        ],
-        RawMessage={
-            'Data':msg.as_string(),
-        },
-        # ConfigurationSetName=CONFIGURATION_SET
-    )
-# Display an error if something goes wrong.	
-except ClientError as e:
-    print(e.response['Error']['Message'])
-else:
-    print("Email sent! Message ID:"),
-    print(response['MessageId'])
+    # Add a header to tell the email client to treat this part as an attachment,
+    # and to give the attachment a name.
+    att.add_header('Content-Disposition','attachment',filename=os.path.basename(ATTACHMENT))
+
+    # Attach the multipart/alternative child container to the multipart/mixed
+    # parent container.
+    msg.attach(msg_body)
+
+    # Add the attachment to the parent container.
+    msg.attach(att)
+    #print(msg)
+    try:
+        #Provide the contents of the email.
+        response = client.send_raw_email(
+            Source=SENDER,
+            Destinations=[
+                i
+            ],
+            RawMessage={
+                'Data':msg.as_string(),
+            },
+            # ConfigurationSetName=CONFIGURATION_SET
+        )
+    # Display an error if something goes wrong.	
+    except ClientError as e:
+        print(e.response['Error']['Message'])
+    else:
+        print("Email sent! Message ID:"),
+        print(response['MessageId'])
